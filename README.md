@@ -1,11 +1,15 @@
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/ATFutures/calendar/workflows/R-CMD-check/badge.svg)](https://github.com/ATFutures/calendar/actions)
+[![](http://www.r-pkg.org/badges/version/calendar)](https://www.r-pkg.org:443/pkg/calendar)
 [![The API of a maturing package has been roughed out, but finer details
 likely to
-change.](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![Travis build
-status](https://travis-ci.org/ATFutures/calendar.svg?branch=master)](https://travis-ci.org/ATFutures/calendar)
+change.](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
+[![Coverage
+status](https://codecov.io/gh/ATFutures/calendar/branch/master/graph/badge.svg)](https://app.codecov.io/github/ATFutures/calendar?branch=master)
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- badges: end -->
 
 # calendar
 
@@ -15,7 +19,7 @@ data they represent, in R. iCalendar is an open standard for “exchanging
 calendar and scheduling information between users and computers”
 described at [icalendar.org](https://icalendar.org/) (the full spec can
 be found in a plain text file
-[here](https://tools.ietf.org/rfc/rfc5545.txt)).
+[here](https://www.rfc-editor.org/rfc/rfc5545.txt)).
 
 Recently the UK Government endorsed the iCal format in a
 [publication](https://www.gov.uk/government/publications/open-standards-for-government/exchange-of-calendar-events)
@@ -27,6 +31,12 @@ Wales.
 ## Installation
 
 ``` r
+install.packages("calendar")
+```
+
+Or install the cutting edge from GitHub
+
+``` r
 devtools::install_github("ATFutures/calendar")
 ```
 
@@ -35,11 +45,8 @@ library(calendar)
 ```
 
 <!-- You can install the released version of calendar from [CRAN](https://CRAN.R-project.org) with: -->
-
 <!-- ``` r -->
-
 <!-- install.packages("calendar") -->
-
 <!-- ``` -->
 
 ## Example
@@ -84,8 +91,7 @@ ic_extract(ical_example, "TSTAMP")
 ```
 
 A larger example shows all national holidays in England and Wales. It
-can be read-in as
-follows:
+can be read-in as follows:
 
 ``` r
 ics_file <- system.file("extdata", "england-and-wales.ics", package = "calendar")
@@ -128,25 +134,25 @@ in progress):
 ``` r
 ics_df = ic_read(ics_file) # read it in
 head(ics_df) # check the results
-#> # A tibble: 6 x 6
-#>   `DTEND;VALUE=DAT… `DTSTART;VALUE=D… SUMMARY   UID       SEQUENCE DTSTAMP 
-#>   <date>            <date>            <chr>     <chr>     <chr>    <chr>   
-#> 1 2012-01-03        2012-01-02        New Year… ca6af745… 0        2018080…
-#> 2 2012-04-07        2012-04-06        Good Fri… ca6af745… 0        2018080…
-#> 3 2012-04-10        2012-04-09        Easter M… ca6af745… 0        2018080…
-#> 4 2012-05-08        2012-05-07        Early Ma… ca6af745… 0        2018080…
-#> 5 2012-06-05        2012-06-04        Spring b… ca6af745… 0        2018080…
-#> 6 2012-06-06        2012-06-05        Queen’s … ca6af745… 0        2018080…
+#> # A tibble: 6 × 6
+#>   `DTEND;VALUE=DATE` `DTSTART;VALUE=DATE` SUMMARY         UID   SEQUENCE DTSTAMP
+#>   <date>             <date>               <chr>           <chr> <chr>    <chr>  
+#> 1 2012-01-03         2012-01-02           New Year’s Day  ca6a… 0        201808…
+#> 2 2012-04-07         2012-04-06           Good Friday     ca6a… 0        201808…
+#> 3 2012-04-10         2012-04-09           Easter Monday   ca6a… 0        201808…
+#> 4 2012-05-08         2012-05-07           Early May bank… ca6a… 0        201808…
+#> 5 2012-06-05         2012-06-04           Spring bank ho… ca6a… 0        201808…
+#> 6 2012-06-06         2012-06-05           Queen’s Diamon… ca6a… 0        201808…
 ```
 
 What class is each column?
 
 ``` r
 vapply(ics_df, class, character(1))
-#>   DTEND;VALUE=DATE DTSTART;VALUE=DATE            SUMMARY 
-#>             "Date"             "Date"        "character" 
-#>                UID           SEQUENCE            DTSTAMP 
-#>        "character"        "character"        "character"
+#>   DTEND;VALUE=DATE DTSTART;VALUE=DATE            SUMMARY                UID 
+#>             "Date"             "Date"        "character"        "character" 
+#>           SEQUENCE            DTSTAMP 
+#>        "character"        "character"
 ```
 
 ## Trying on calendars ‘in the wild’
@@ -167,10 +173,9 @@ my_cal$`DTEND;VALUE=DATE`[1] - my_cal$`DTSTART;VALUE=DATE`[1]
 
 ## Related projects
 
-  - A Python package for working with ics files:
-    <https://github.com/C4ptainCrunch/ics.py>
-  - A JavaScript package by Mozilla:
-    <https://github.com/mozilla-comm/ical.js/>
-  - Ruby library: <https://github.com/icalendar/icalendar>
-  - The ical R package on CRAN for reading .ics files:
-    <https://github.com/petermeissner/ical>
+- A Python package for working with ics files:
+  <https://github.com/ics-py/ics-py>
+- A JavaScript package by Mozilla: <https://github.com/kewisch/ical.js>
+- Ruby library: <https://github.com/icalendar/icalendar>
+- The ical R package on CRAN for reading .ics files:
+  <https://github.com/petermeissner/ical>
