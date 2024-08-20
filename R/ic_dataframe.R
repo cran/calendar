@@ -17,30 +17,65 @@
 #' identical(x, x_df2)
 ic_dataframe <- function(x) {
 
-  if(methods::is(object = x, class2 = "data.frame")) {
+  if (inherits(x = x, what = "data.frame")) {
+
     return(x)
+
   }
 
-  stopifnot(methods::is(object = x, class2 = "character") | methods::is(object = x, class2 = "list"))
+  assert(
+    inherits(x = x, what = "character") | inherits(x = x, what = "list"),
+    error_message = c(
+      "x" = sprintf(
+        "{.arg x} is passed as {.cls %s}.",
+        class(x)
+      ),
+      "i" = "{.arg x} has to be {.cls character} or {.cls list}."
+    )
+  )
 
-  if(methods::is(object = x, class2 = "character")) {
+  if (inherits(x = x, what = "character")) {
+
     x_list <- ic_list(x)
-  } else if(methods::is(object = x, class2 = "list")) {
+
+  } else {
+
     x_list <- x
+
   }
 
-  x_list_named <- lapply(x_list, function(x) {
-    ic_vector(x)
-  })
+  x_list_named <- lapply(
+    X = x_list,
+    FUN = function(x) {
+      ic_vector(x)
+    }
+  )
+
   x_df <- ic_bind_list(x_list_named)
 
-  date_cols <- grepl(pattern = "VALUE=DATE", x = names(x_df))
-  if(any(date_cols)) {
-    x_df[date_cols] <- lapply(x_df[, date_cols], ic_date)
+  date_cols <- grepl(
+    pattern = "VALUE=DATE",
+    x = names(x_df)
+  )
+
+  if (any(date_cols)) {
+
+    x_df[date_cols] <- lapply(
+      X   = x_df[date_cols],
+      FUN = ic_date
+    )
+
   }
+
   datetime_cols <- names(x_df) %in% c("DTSTART", "DTEND")
-  if(any(datetime_cols)) {
-    x_df[datetime_cols] <- lapply(x_df[, datetime_cols], ic_datetime)
+
+  if (any(datetime_cols)) {
+
+    x_df[datetime_cols] <- lapply(
+      X   = x_df[datetime_cols],
+      FUN = ic_datetime
+    )
+
   }
 
   # names(x_df) <- gsub(pattern = ".VALUE.DATE", replacement = "", names(x_df))
